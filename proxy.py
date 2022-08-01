@@ -1,10 +1,17 @@
 import http.server
+import random
 import socketserver
+import string
 import urllib.request
 from urllib.parse import urlparse
 from urllib.parse import urlunparse
 from urllib.parse import unquote_to_bytes
 from urllib.parse import urlencode
+
+
+def random_id():
+    return 'BT' + ''.join(
+        random.choices(string.ascii_uppercase + string.digits, k=18))
 
 
 class MyProxy(http.server.SimpleHTTPRequestHandler):
@@ -17,7 +24,7 @@ class MyProxy(http.server.SimpleHTTPRequestHandler):
         # sovrascrivo alcune info
         args["downloaded"] = 0
         args["left"] = 0
-        args["peer_id"] = 'bt123456789012345678'
+        args["peer_id"] = random_id()
         parsed_url = parsed_url._replace(query=urlencode(args))
         url = urlunparse(parsed_url)
         print(url)
